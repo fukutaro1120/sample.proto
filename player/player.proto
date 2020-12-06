@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package myuon.elencore;
+
+import "elencore/player/course.proto";
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
+
+// Player  向けの機能を提供するサービス。
+service Player {
+  // ユーザのコースを情報を取得する。
+  //
+  // 以下のステータスを返す。
+  // - OK: 成功。
+  // - INVALID_ARGUMENT: リクエストの内容に問題がある。
+  // - UNAUTHENTICATED: 適切な認可情報が付与されていない。
+  // - PERMISSION_DENIED: 対象のコースのアクセスする権限がない。
+  // - NOT_FOUND: 指定したコースが見つからなかった。
+  // - INTERNAL: サーバエラー。
+  rpc GetUserCourse (GetUserCourseRequest) returns (GetUserCourseResponse);
+
+  // ユーザのレクチャプログレスを記録する
+  //
+  // 以下のステータスを返す。
+  // - OK: 成功。
+  // - INVALID_ARGUMENT: リクエストの内容に問題がある。
+  // - UNAUTHENTICATED: 適切な認可情報が付与されていない。
+  // - PERMISSION_DENIED: 対象のコースのアクセスする権限がない。
+  // - NOT_FOUND: 指定したコースが見つからなかった。
+  // - INTERNAL: サーバエラー。
+  rpc UpdateLecturePregress (UpdateLecturePregressRequest) returns (UpdateLecturePregressResponse);
+  
+  // ユーザのレクチャの完了を記録する
+  //
+  // 以下のステータスを返す。
+  // - OK: 成功。
+  // - INVALID_ARGUMENT: リクエストの内容に問題がある。
+  // - UNAUTHENTICATED: 適切な認可情報が付与されていない。
+  // - PERMISSION_DENIED: 対象のコースのアクセスする権限がない。
+  // - NOT_FOUND: 指定したコースが見つからなかった。
+  // - INTERNAL: サーバエラー。
+  rpc CompleteLecture (Request) returns (Response);
+}
+
+// ユーザのコース取得のリクエスト
+message GetUserCourseRequest {
+  // コース ID
+  string course_id = 1;
+}
+
+// ユーザのコース取得のレスポンス
+message GetUserCourseResponse {
+  // コース
+  Course course = 1;
+  // セクションのマップ セクションの id に紐づくタイトルをマップで渡す  
+  map<string, Section> section_table = 2;
+  // ソートされたセクションの id を渡す
+  repeated string sorted_section_ids = 3;
+}
+
+// ユーザのレクチャ進捗を記録するリクエスト
+message UpdateLecturePregressRequest {
+  string course_id = 1;
+  string lecture_id = 2; 
+  int32 progress = 3; 
+}
+
+message UpdateLecturePregressResponse {
+}
+
+// ユーザのコース完了を記録するリクエスト
+message Request {
+  string course_id = 1;
+  string lecture_id = 2;
+  bool check = 3;
+}
+
+message Response {
+}

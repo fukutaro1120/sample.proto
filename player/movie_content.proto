@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package myuon.elencore;
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
+
+// MovieContent は動画タイプのレクチャのコンテンツを表す。
+message MovieContent {
+  // ID
+  string id = 1;
+  // 動画再生時間
+  int64 playback_seconds = 2;
+  // 動画の保存先URL
+  string resouce_url = 3;
+  // サムネイルの URL
+  string thumbnail_image_url = 4;
+}

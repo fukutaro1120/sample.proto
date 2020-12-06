@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package myuon.elencore;
+
+import "elencore/admin/user.proto";
+
+option go_package = "girfub.com/myuoncore/elen-core-api;elencore";
+
+// Admin 向けの機能を提供するサービス。
+service Admin {
+  // ユーザの登録をする。
+  //
+  // 以下のステータスを返す。
+  // - OK: 成功。
+  // - UNAUTHENTICATED: 適切な認証情報がない。
+  // - INTERNL: サーバエラー。
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+
+
+  // ユーザの削除をする。
+  //
+  // 以下のステータスを返す
+  // - OK: 成功。
+  // - NOT_FOUND: 指定したユーザが存在しない。
+  // - UNAUTHENTICATED: 適切な認証情報がない。
+  // - INTERNAL: サーバエラー。
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+
+  // プレイヤトークンを発行する。
+  //
+  // 以下のステータスを返す。
+  // - OK: 成功。
+  // - INVALID_ARGUMENT: リクエストの内容に問題がある。
+  // - UNAUTHENTICATED: 適切な認証情報がない。
+  // - INTERNAL: サーバエラー。
+  rpc CreatePlayerToken(CreatePlayerTokenRequest) returns (CreatePlayerTokenResponse); 
+
+  // ユーザのコースの一覧を取得する。
+  //
+  // 以下のステータスを返す。
+  // - OK: 成功。
+  // - INVALID_ARGUMENT: リクエストの内容に問題がある。
+  // - INTERNAL: サーバエラー。 
+  rpc GetUserCourse(GetUserCourseRequest) returns (GetUserCourseResponse);
+
+  // ユーザの完了したコースを検索する
+  // 
+  // 以下のステータスを返す。
+  // - OK: 成功。
+  // - NOT_FOUND: 指定したユーザが存在しない。
+  // - UNAUTHENTICATED: 適切な認証情報がない。
+  // - INTERNAL: サーバエラー。 
+  rpc SearchUserCompletedCourse(SearchUserCompletedCourseRequest) returns (SearchUserCompletedCoursedResponse);
+}
+
+// ユーザ登録のリクエスト
+message CreateUserRequest {
+}
+
+// ユーザ登録のレスポンス
+message CreateUserResponse {
+  // ユーザ ID
+  User id = 1;
+}
+
+// ユーザ削除のリクエスト 
+message DeleteUserRequesr {
+  // ユーザ ID
+  string user_id = 1;
+}
+
+// ユーザ削除のレスポンス
+message DeleteUserResponse {
+}
+
+// プレイヤートークン発行のリクエスト
+message CreatePlayerTokenRequest {
+  // ユーザ ID
+  string user_id = 1;
+}
+
+// プレイヤートークン発行のレスポンス 
+message CreatePlayerTokenResponse {
+}
+
+// ユーザコース一覧のリクエスト
+message GetUserCourseRequest {
+  // ユーザ ID
+  string user_id = 1;
+}
+
+// ユーザコース一覧のレスポンス 
+message GetUserCourseResponse {
+  // ユーザコース
+  Course course = 1;
+}
+
+
+// ユーザの完了したコースを検索するリクエスト
+message SearchUserCompletedCourseRequest {
+  // ユーザ ID
+  string id = 1;
+}

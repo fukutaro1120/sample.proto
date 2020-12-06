@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package myuon.elencore;
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
+
+// Section はセクションを表す。
+message Section {
+  // タイトル
+  string title = 1;
+}

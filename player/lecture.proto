@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package myuon.elencore;
+
+import "elencore/player/movie_content.proto";
+import "elencore/player/slide_content.proto";
+import "elencore/player/quiz_content.proto";
+import "elencore/player/user_lecture_status.proto";
+import "elencore/player/section.proto";
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
+
+// Lecture はレクチャを表す。
+message Lecture {
+  // ID
+  string id = 1;
+  // タイトル
+  string title =2;
+  // スキップ可否
+  bool can_skip = 3;
+  // 視聴可能の可否
+  bool can_preview = 4;
+  // コンテンツの種類
+  string content_type = 5;
+  // コンテンツ
+  oneof content {
+    MovieContent movie = 6;
+    SlideContent slide = 7;
+    QuizContent quiz = 8;
+  }
+  // ユーザのレクチャステータス
+  UserLectureStatus user_status = 9;
+  
+  oneof section {
+    // セクション ID
+    string section_id = 10;
+  }
+}

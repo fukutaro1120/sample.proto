@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package myuon.elencore;
+
+import "elencore/player/lecture.proto";
+import "elencore/player/user_course_status.proto";
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
+
+// Course はコースを表す。
+message Course {
+  // ID
+  string id = 1;
+  // タイトル
+  string title = 2;
+  // サマリ
+  string summary = 3;
+  // 説明文
+  string description = 4;
+  // コースの前提条件
+  repeated string prerequisties = 5;
+  // サムネイルの URL
+  string thumbnail_image_url = 6;
+  // ユーザのコースステータス
+  UserCourseStatus user_status = 7;
+  // レクチャの配列
+  repeated Lecture lectures = 8;
+}
