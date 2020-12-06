@@ -3,6 +3,7 @@ syntax = "proto3";
 package myuon.elencore;
 
 import "elencore/player/course.proto";
+import "elencore/player/section.proto";
 
 option go_package = "github.com/myuoncorp/elen-core-api;elencore";
 
@@ -28,7 +29,7 @@ service Player {
   // - PERMISSION_DENIED: 対象のコースのアクセスする権限がない。
   // - NOT_FOUND: 指定したコースが見つからなかった。
   // - INTERNAL: サーバエラー。
-  rpc UpdateLecturePregress (UpdateLecturePregressRequest) returns (UpdateLecturePregressResponse);
+  rpc UpdateLectureProgress (UpdateLectureProgressRequest) returns (UpdateLectureProgressResponse);
   
   // ユーザのレクチャの完了を記録する
   //
@@ -52,8 +53,8 @@ message GetUserCourseRequest {
 message GetUserCourseResponse {
   // コース
   Course course = 1;
-  // セクションのマップ セクションの id に紐づくタイトルをマップで渡す
-    // key: セクション ID
+  // セクションの id に紐づくタイトルをマップで返す
+  // key: セクション ID
   // value: セクションタイトル
   map<string, Section> section_table = 2;
   // ソートされたセクションの id を渡す
@@ -61,13 +62,13 @@ message GetUserCourseResponse {
 }
 
 // ユーザのレクチャ進捗を記録するリクエスト
-message UpdateLecturePregressRequest {
+message UpdateLectureProgressRequest {
   string course_id = 1;
   string lecture_id = 2; 
   int32 progress = 3; 
 }
 
-message UpdateLecturePregressResponse {
+message UpdateLectureProgressResponse {
 }
 
 // ユーザのコース完了を記録するリクエスト

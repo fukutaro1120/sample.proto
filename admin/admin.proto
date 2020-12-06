@@ -5,8 +5,10 @@ package myuon.elencore;
 import "elencore/admin/user.proto";
 import "elencore/admin/player_token.proto";
 import "elencore/admin/lecture.proto";
+import "elencore/admin/course.proto";
+import "elencore/admin/section.proto";
 
-option go_package = "girfub.com/myuoncore/elen-core-api;elencore";
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
 
 // Admin 向けの機能を提供するサービス。
 service Admin {
@@ -14,6 +16,7 @@ service Admin {
   //
   // 以下のステータスを返す。
   // - OK: 成功。
+  // - INVALID_ARGUMENT: リクエストの内容に問題がある。
   // - UNAUTHENTICATED: 適切な認証情報がない。
   // - INTERNL: サーバエラー。
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
@@ -22,8 +25,9 @@ service Admin {
   //
   // 以下のステータスを返す
   // - OK: 成功。
-  // - NOT_FOUND: 指定したユーザが存在しない。
+  // - INVALID_ARGUMENT: リクエストの内容に問題がある。
   // - UNAUTHENTICATED: 適切な認証情報がない。
+  // - NOT_FOUND: 指定したユーザが存在しない。
   // - INTERNAL: サーバエラー。
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
 
@@ -32,6 +36,8 @@ service Admin {
   // 以下のステータスを返す。
   // - OK: 成功。
   // - INVALID_ARGUMENT: リクエストの内容に問題がある。
+  // - UNAUTHENTICATED: 適切な認可情報が付与されていない。
+  // - NOT_FOUND: 指定したユーザが存在しない。
   // - INTERNAL: サーバエラー。
   rpc CreatePlayerToken(CreatePlayerTokenRequest) returns (CreatePlayerTokenResponse); 
 
@@ -40,13 +46,17 @@ service Admin {
   // 以下のステータスを返す。
   // - OK: 成功。
   // - INVALID_ARGUMENT: リクエストの内容に問題がある。
+  // - UNAUTHENTICATED: 適切な認証情報がない。
+  // - NOT_FOUND: 指定したコースが存在しない。
   // - INTERNAL: サーバエラー。 
   rpc GetUserCourses(GetUserCoursesRequest) returns (GetUserCoursesResponse);
 
-  // ユーザの完了したコースを検索する
+  // コースの完了状態検索する
   // 
   // 以下のステータスを返す。
   // - OK: 成功。
+  // - INVALID_ARGUMENT: リクエストの内容に問題がある。
+  // - UNAUTHENTICATED: 適切な認可情報が付与されていない。
   // - NOT_FOUND: 指定したユーザが存在しない。
   // - INTERNAL: サーバエラー。 
   rpc SearchUserCompletedCourse(SearchUserCompletedCourseRequest) returns (SearchUserCompletedCoursedResponse);
@@ -63,7 +73,7 @@ message CreateUserResponse {
 }
 
 // ユーザ削除のリクエスト 
-message DeleteUserRequesr {
+message DeleteUserRequest {
   // ユーザ ID
   string user_id = 1;
 }
@@ -80,11 +90,11 @@ message CreatePlayerTokenRequest {
 
 // プレイヤートークン発行のレスポンス 
 message CreatePlayerTokenResponse {
-  PlayerToken token = 1;
+  PlayerToken value = 1;
 }
 
 // ユーザコース一覧のリクエスト
-message GetUserCourseRequest {
+message GetUserCoursesRequest {
   // ユーザ ID
   string user_id = 1;
   // 取得するコース ID の配列
@@ -92,9 +102,9 @@ message GetUserCourseRequest {
 }
 
 // ユーザコース一覧のレスポンス 
-message GetUserCourseResponse {
+message GetUserCoursesResponse {
   // ユーザコースの配列
-  repeated Course courses = 1;
+  repeated Course course = 1;
   // セクションのマップ セクションの id に紐づくタイトルをマップで渡す
   // key: セクション ID
   // value: セクションタイトル
@@ -103,14 +113,14 @@ message GetUserCourseResponse {
   repeated string sorted_section_ids = 3;
 }
 
-// ユーザの完了コースを検索するリクエスト
+// コースの完了状態を検索するリクエスト
 message SearchUserCompletedCourseRequest {
-  // ユーザ ID
-  string id = 1;
+  // ユーザ ID の配列
+  repeated string user_ids = 1;
 }
 
-// ユーザの完了コースを検索するレスポンス
+// コースの完了状態の検索するレスポンス
 message SearchUserCompletedCoursedResponse {
-  // ユーザコースステータス
-  UserCourseStatus progres = 1;
+  // ユーザコースの配列
+  repeated Course course = 1;
 }

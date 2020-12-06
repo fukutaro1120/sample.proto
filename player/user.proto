@@ -4,7 +4,7 @@ package myuon.elencore;
 
 option go_package = "github.com/myuoncorp/elen-core-api;elencore";
 
-// User はプラットフォームのユーザを表す。
+// User はユーザを表す。
 message User {
   // ID
   string id = 1;

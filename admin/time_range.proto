@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package myuon.elenadmin;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/myuoncorp/elen-core-api;elenadmin";
+
+// 日時範囲条件
+message TimestampRange {
+  // 日時の範囲 (From)
+  google.protobuf.Timestamp from = 1;
+  // 日時の範囲 (To)
+  google.protobuf.Timestamp to = 2;
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package myuon.elencore;
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
+
+// QuizContent はクイズタイプのレクチャのコンテンツを表す。
+message QuizContent {
+  // TODO: 
+}
