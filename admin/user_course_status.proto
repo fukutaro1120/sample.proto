@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package myuon.elencore;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "github.com/myuoncorp/elen-core-api;elencore";
 
 // UserCourseStatus はユーザのコースの状態を表す。

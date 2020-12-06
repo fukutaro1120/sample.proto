@@ -3,6 +3,8 @@ syntax = "proto3";
 package myuon.elencore;
 
 import "elencore/admin/user.proto";
+import "elencore/admin/player_token.proto";
+import "elencore/admin/lecture.proto";
 
 option go_package = "girfub.com/myuoncore/elen-core-api;elencore";
 
@@ -15,7 +17,6 @@ service Admin {
   // - UNAUTHENTICATED: 適切な認証情報がない。
   // - INTERNL: サーバエラー。
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
-
 
   // ユーザの削除をする。
   //
@@ -31,24 +32,22 @@ service Admin {
   // 以下のステータスを返す。
   // - OK: 成功。
   // - INVALID_ARGUMENT: リクエストの内容に問題がある。
-  // - UNAUTHENTICATED: 適切な認証情報がない。
   // - INTERNAL: サーバエラー。
   rpc CreatePlayerToken(CreatePlayerTokenRequest) returns (CreatePlayerTokenResponse); 
 
-  // ユーザのコースの一覧を取得する。
+  // ユーザのコース一覧を取得する。
   //
   // 以下のステータスを返す。
   // - OK: 成功。
   // - INVALID_ARGUMENT: リクエストの内容に問題がある。
   // - INTERNAL: サーバエラー。 
-  rpc GetUserCourse(GetUserCourseRequest) returns (GetUserCourseResponse);
+  rpc GetUserCourses(GetUserCoursesRequest) returns (GetUserCoursesResponse);
 
   // ユーザの完了したコースを検索する
   // 
   // 以下のステータスを返す。
   // - OK: 成功。
   // - NOT_FOUND: 指定したユーザが存在しない。
-  // - UNAUTHENTICATED: 適切な認証情報がない。
   // - INTERNAL: サーバエラー。 
   rpc SearchUserCompletedCourse(SearchUserCompletedCourseRequest) returns (SearchUserCompletedCoursedResponse);
 }
@@ -60,7 +59,7 @@ message CreateUserRequest {
 // ユーザ登録のレスポンス
 message CreateUserResponse {
   // ユーザ ID
-  User id = 1;
+  User user_id = 1;
 }
 
 // ユーザ削除のリクエスト 
@@ -81,23 +80,37 @@ message CreatePlayerTokenRequest {
 
 // プレイヤートークン発行のレスポンス 
 message CreatePlayerTokenResponse {
+  PlayerToken token = 1;
 }
 
 // ユーザコース一覧のリクエスト
 message GetUserCourseRequest {
   // ユーザ ID
   string user_id = 1;
+  // 取得するコース ID の配列
+  repeated string course_ids = 2;
 }
 
 // ユーザコース一覧のレスポンス 
 message GetUserCourseResponse {
-  // ユーザコース
-  Course course = 1;
+  // ユーザコースの配列
+  repeated Course courses = 1;
+  // セクションのマップ セクションの id に紐づくタイトルをマップで渡す
+  // key: セクション ID
+  // value: セクションタイトル
+  map<string, Section> section_table = 2;
+  // ソートされたセクションの ID
+  repeated string sorted_section_ids = 3;
 }
 
-
-// ユーザの完了したコースを検索するリクエスト
+// ユーザの完了コースを検索するリクエスト
 message SearchUserCompletedCourseRequest {
   // ユーザ ID
   string id = 1;
+}
+
+// ユーザの完了コースを検索するレスポンス
+message SearchUserCompletedCoursedResponse {
+  // ユーザコースステータス
+  UserCourseStatus progres = 1;
 }

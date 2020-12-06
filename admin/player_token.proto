@@ -1,0 +1,14 @@
+syntax ="proto3";
+
+package myuon.elencore;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
+
+// PlayerToken はリソースにアクセスするためのトークンを表す。
+
+message PlayerToken {
+ // トークン
+  string token = 1;
+}

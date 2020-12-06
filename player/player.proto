@@ -39,7 +39,7 @@ service Player {
   // - PERMISSION_DENIED: 対象のコースのアクセスする権限がない。
   // - NOT_FOUND: 指定したコースが見つからなかった。
   // - INTERNAL: サーバエラー。
-  rpc CompleteLecture (Request) returns (Response);
+  rpc CompleteLecture (CompleteLectureRequest) returns (CompleteLectureResponse);
 }
 
 // ユーザのコース取得のリクエスト
@@ -52,7 +52,9 @@ message GetUserCourseRequest {
 message GetUserCourseResponse {
   // コース
   Course course = 1;
-  // セクションのマップ セクションの id に紐づくタイトルをマップで渡す  
+  // セクションのマップ セクションの id に紐づくタイトルをマップで渡す
+    // key: セクション ID
+  // value: セクションタイトル
   map<string, Section> section_table = 2;
   // ソートされたセクションの id を渡す
   repeated string sorted_section_ids = 3;
@@ -69,11 +71,11 @@ message UpdateLecturePregressResponse {
 }
 
 // ユーザのコース完了を記録するリクエスト
-message Request {
+message CompleteLectureRequest {
   string course_id = 1;
   string lecture_id = 2;
-  bool check = 3;
+  bool compleatlecture = 3;
 }
 
-message Response {
+message CompleteLectureResponse {
 }

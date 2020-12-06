@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package myuon.elencore;
+
+import "elencore/admin/movie_content.proto";
+import "elencore/admin/slide_content.proto";
+import "elencore/admin/quiz_content.proto";
+import "elencore/admin/user_lecture_status.proto";
+import "elencore/admin/section.proto";
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
+
+// Lecture はレクチャを表す。
+message Lecture {
+  // ID
+  string id = 1;
+  // コンテンツの種類
+  string content_type = 2;
+  // コンテンツ
+  oneof content {
+    MovieContent movie = 3;
+    SlideContent slide = 4;
+    QuizContent quiz = 5;
+  }
+  // ユーザのレクチャステータス
+  UserLectureStatus user_status = 6;
+  // セクション
+  oneof section {
+    // セクション ID
+    string section_id = 7;
+  }
+}

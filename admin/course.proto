@@ -2,7 +2,11 @@ syntax ="proto3";
 
 package myuon.elencore;
 
-option go_package = "gitfub.com/myuoncorp/elen-core-api;elencore";
+import "elencore/admin/user_course_status.proto";
+import "elencore/admin/lecture.proto";
+
+
+option go_package = "github.com/myuoncorp/elen-core-api;elencore";
 
 // Course はコースを表す。
 message Course {
@@ -20,4 +24,6 @@ message Course {
   string thumbnail_image_url = 6;
   // ユーザのコースステータス
   UserCourseStatus user_status = 7;
+  // レクチャの配列
+  repeated Lecture lectures = 8;
 }

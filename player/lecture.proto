@@ -30,7 +30,7 @@ message Lecture {
   }
   // ユーザのレクチャステータス
   UserLectureStatus user_status = 9;
-  
+  //セクション
   oneof section {
     // セクション ID
     string section_id = 10;
